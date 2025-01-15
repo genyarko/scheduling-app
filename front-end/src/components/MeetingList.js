@@ -1,5 +1,5 @@
 import React from 'react';
-import MeetingCard from './MeetingCard'; // Import the component
+import MeetingCard from './MeetingCard';
 
 const MeetingList = ({ meetings = [], onReschedule, onCancel }) => {
   console.log("Meetings:", meetings);
@@ -26,8 +26,8 @@ const MeetingList = ({ meetings = [], onReschedule, onCancel }) => {
 // Default props for safety
 MeetingList.defaultProps = {
   meetings: [],
-  onReschedule: () => { },
-  onCancel: () => { },
+  onReschedule: () => console.warn("onReschedule function not provided"), // Default function
+  onCancel: () => console.warn("onCancel function not provided"), // Default function
 };
 
 export default MeetingList;

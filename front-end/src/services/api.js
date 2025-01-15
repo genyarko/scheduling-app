@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:4000", // Replace with your back-end URL
+    baseURL: "http://localhost:4000/api", // Ensure the baseURL includes '/api'
     headers: {
         "Content-Type": "application/json",
     },
@@ -25,6 +25,9 @@ export const getMeetings = () => api.get("/meetings");
 
 // Cancel a meeting
 export const cancelMeeting = (id) => api.delete(`/meetings/${id}`);
+
+// Reschedule a meeting
+export const rescheduleMeeting = (id, newData) => api.put(`/meetings/${id}`, newData);
 
 // Fetch user availability
 export const getUserAvailability = (userId) => api.get(`/users/${userId}/available-slots`);

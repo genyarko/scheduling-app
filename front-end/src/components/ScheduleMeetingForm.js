@@ -3,7 +3,7 @@ import { TextField, Button } from "@mui/material";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { createMeeting } from "../services/api";
 
-const ScheduleMeetingForm = () => {
+const ScheduleMeetingForm = ({ onMeetingCreated }) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState(null);
@@ -23,11 +23,18 @@ const ScheduleMeetingForm = () => {
         const meetingData = { title, description, dateTime, duration, participants };
 
         try {
+            console.log("Sending meeting data:", meetingData); // Debugging log
             const response = await createMeeting(meetingData);
+            console.log("API Response:", response.data); // Debugging log
             alert(`Meeting scheduled successfully with ID: ${response.data.id}`);
+
+            // Notify the parent component that a new meeting has been created
+            if (onMeetingCreated) {
+                onMeetingCreated();
+            }
         } catch (error) {
-            console.error("Error scheduling meeting:", error);
-            alert("Failed to schedule meeting.");
+            console.error("Error scheduling meeting:", error.response || error.message);
+            alert(`Failed to schedule meeting: ${error.response?.data || error.message}`);
         }
     };
 
