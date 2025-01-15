@@ -19,16 +19,17 @@ const ScheduleMeetingForm = ({ onMeetingCreated }) => {
             return;
         }
 
-        const dateTime = `${date}T${time}`;
+        // Format dateTime
+        const formattedDate = new Date(date).toISOString().split('T')[0];
+        const formattedTime = new Date(time).toISOString().split('T')[1];
+        const dateTime = `${formattedDate}T${formattedTime}`;
+
         const meetingData = { title, description, dateTime, duration, participants };
 
         try {
-            console.log("Sending meeting data:", meetingData); // Debugging log
+            console.log("Sending meeting data:", meetingData);
             const response = await createMeeting(meetingData);
-            console.log("API Response:", response.data); // Debugging log
             alert(`Meeting scheduled successfully with ID: ${response.data.id}`);
-
-            // Notify the parent component that a new meeting has been created
             if (onMeetingCreated) {
                 onMeetingCreated();
             }
@@ -37,6 +38,7 @@ const ScheduleMeetingForm = ({ onMeetingCreated }) => {
             alert(`Failed to schedule meeting: ${error.response?.data || error.message}`);
         }
     };
+
 
     return (
         <form onSubmit={handleSubmit} className="p-4 bg-white rounded shadow-md max-w-md">

@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import ScheduleMeetingForm from './components/ScheduleMeetingForm';
-import MeetingList from './components/MeetingList';
-import { getMeetings, cancelMeeting, rescheduleMeeting } from './services/api';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import ScheduleMeetingForm from "./components/ScheduleMeetingForm";
+import MeetingList from "./components/MeetingList";
+import RescheduleModal from "./components/RescheduleModal"; // Import the modal
+import { getMeetings, cancelMeeting, rescheduleMeeting } from "./services/api";
+import "./App.css";
 
 function App() {
   const [meetings, setMeetings] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedMeeting, setSelectedMeeting] = useState(null);
 
-  // Fetch meetings from the server
   const fetchMeetings = async () => {
     try {
       const response = await getMeetings();
@@ -17,29 +19,29 @@ function App() {
     }
   };
 
-  // Fetch meetings when the component mounts
   useEffect(() => {
     fetchMeetings();
   }, []);
 
-  // Function to handle rescheduling a meeting
-  const handleReschedule = async (meetingId) => {
+  const handleReschedule = (meetingId) => {
+    const meeting = meetings.find((m) => m.id === meetingId);
+    setSelectedMeeting(meeting);
+    setModalOpen(true); // Open the modal
+  };
+
+  const handleRescheduleSubmit = async (newDateTime) => {
     try {
-      // Add your rescheduling logic here
-      console.log("Rescheduling meeting with ID:", meetingId);
-      // Example: Open a rescheduling form or call an API
-      await rescheduleMeeting(meetingId, { newDateTime: "2023-12-31T10:00:00" }); // Replace with actual logic
-      fetchMeetings(); // Re-fetch meetings after rescheduling
+      await rescheduleMeeting(selectedMeeting.id, { newDateTime });
+      fetchMeetings();
     } catch (error) {
       console.error("Error rescheduling meeting:", error);
     }
   };
 
-  // Function to handle canceling a meeting
   const handleCancel = async (meetingId) => {
     try {
       await cancelMeeting(meetingId);
-      fetchMeetings(); // Re-fetch meetings after cancellation
+      fetchMeetings();
     } catch (error) {
       console.error("Error canceling meeting:", error);
     }
@@ -54,7 +56,6 @@ function App() {
         <div className="flex flex-col items-center">
           <ScheduleMeetingForm onMeetingCreated={fetchMeetings} />
           <div className="mt-8 w-full max-w-2xl">
-            {/* Pass onReschedule and onCancel functions to MeetingList */}
             <MeetingList
               meetings={meetings}
               onReschedule={handleReschedule}
@@ -63,6 +64,12 @@ function App() {
           </div>
         </div>
       </main>
+      <RescheduleModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleRescheduleSubmit}
+        meeting={selectedMeeting}
+      />
     </div>
   );
 }
