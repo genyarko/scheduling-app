@@ -8,7 +8,12 @@ exports.getAllMeetings = (req, res) => {
             console.error(err);
             res.status(500).send('Error fetching meetings');
         } else {
-            res.json(results);
+            // Format the dateTime field for each meeting
+            const formattedResults = results.map(meeting => ({
+                ...meeting,
+                dateTime: new Date(meeting.dateTime).toISOString().slice(0, 19).replace('T', ' ')
+            }));
+            res.json(formattedResults);
         }
     });
 };
