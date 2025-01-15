@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "8a74f396-2130-4d5e-aa20-2c8f400956ea",
+		"name": "Scheduling app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39713772",
+		"_collection_link": "https://knoxxi-private-devs.postman.co/workspace/c055a6ec-6ed8-4bc7-823e-107db0f3e695/collection/39713772-8a74f396-2130-4d5e-aa20-2c8f400956ea?action=share&source=collection_link&creator=39713772"
+	},
+	"item": [
+		{
+			"name": "scheduling_app request",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Project Discussion\",\r\n    \"description\": \"Discussion about the new project requirements\",\r\n    \"client_id\": 1,\r\n    \"freelancer_id\": 2,\r\n    \"date_time\": \"2025-01-15 14:00:00\",\r\n    \"duration\": 60\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/meetings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"meetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "scheduling app get",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/meetings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"meetings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
